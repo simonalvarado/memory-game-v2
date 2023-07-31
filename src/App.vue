@@ -12,7 +12,7 @@
     </div>
     <div v-if="userName">
       <p class="board__scoreboard">
-        Correctas: {{ correct }} | Incorrectas: {{ wrong }}
+        Correctas: {{ correct }} | Incorrectas: {{ wrong }} | <span @click="restartGame" class="board__scoreboard--restart">Reiniciar</span>
       </p>
     </div>
   </div>
@@ -96,6 +96,17 @@ export default {
           this.selectedCards = []
         }, 1000)
       }
+    },
+    restartGame() {
+      this.cards = []
+      this.correct = 0
+      this.wrong = 0
+      this.cards.forEach(card => {
+        card.flipped = false;
+        card.found = false;
+      });
+      this.selectedCards = []
+      this.getCards()
     }
   }
 }
@@ -128,6 +139,10 @@ export default {
 .board {
   width: 76%;
   max-width: 850px;
+}
+.board__scoreboard--restart{
+  cursor: pointer;
+  font-weight: bold;
 }
 @media (min-width: 1200px) {
   .board {
