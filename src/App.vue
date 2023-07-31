@@ -1,5 +1,5 @@
 <template>
-  <div class="game d-flex flex-column align-items-center justify-content-between">
+  <div :class="{ 'game d-flex flex-column align-items-center justify-content-between': true, 'game--innactive': isGameWon}">
     <h1 class="game__title pb-3 pt-4">Memory Game</h1>
     <div v-if="!userName" class="name-container">
       <input type="text" v-model="playerName" class="name-container__input form-control mb-2" placeholder="Ingresa tu nombre">
@@ -17,6 +17,15 @@
       <p class="board__scoreboard">
         Correctas: {{ correct }} | Incorrectas: {{ wrong }} - <span @click="restartGame" class="board__scoreboard--restart">Reiniciar</span>
       </p>
+    </div>
+    <div v-if="isGameWon" class="popup d-flex align-items-center justify-content-center">
+      <div class="popup-container">
+        <h1 class="popup__title">¡ Felicitaciones {{ userName }} !</h1>
+        <p class="popup__scoreboard">
+          Correctas: {{ correct }} | Incorrectas: {{ wrong }}
+        </p>
+        <button @click="restartGame" class="popup__button btn btn-primary">Jugar de nuevo</button>
+      </div>
     </div>
   </div>
 </template>
@@ -38,7 +47,8 @@ export default {
       selectedCards: [],
       correct: 0,
       wrong: 0,
-      loading: false
+      loading: false,
+      isGameWon: false
     }
   },
   computed: {
@@ -103,6 +113,8 @@ export default {
           this.selectedCards = []
         }, 1000)
       }
+
+      this.checkWin()
     },
     restartGame() {
       this.cards = []
@@ -113,8 +125,16 @@ export default {
         card.found = false;
       });
       this.selectedCards = []
+      this.isGameWon = false
       this.loading = true
       this.getCards()
+    },
+    checkWin() {
+      const allCardsFound = this.shuffledCards.every(card => card.found)
+      console.log('all cards found?', allCardsFound)
+      if (allCardsFound) {
+        this.isGameWon = true
+      }
     }
   }
 }
@@ -132,6 +152,19 @@ export default {
 }
 .game{
   height: 100vh;
+}
+.game--innactive{
+  position: relative;
+}
+.game--innactive::before{
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6); /* Adjust the opacity to control the darkness */
+  z-index: 999;
 }
 .name-container{
   display: flex;
@@ -155,6 +188,21 @@ export default {
 .game__spinner::after {
   border-top-color: rgb(10, 34, 55); /* Set the border top color (for animation) */
 }
+.popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+}
+.popup-container {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 5px;
+  text-align: center;
+}
 @media (min-width: 1200px) {
   .board {
     width: 55%
@@ -163,6 +211,11 @@ export default {
 @media (max-width: 768px) {
   .board {
     width: 90%
+  }
+  .mb-4{
+    margin-bottom: 6px !important;
+    padding-left: 3px !important;
+    padding-right: 3px !important;
   }
 }
 </style>
