@@ -18,7 +18,7 @@
         Correctas: {{ correct }} | Incorrectas: {{ wrong }} - <span @click="restartGame" class="board__scoreboard--restart">Reiniciar</span>
       </p>
     </div>
-    <div v-if="isGameWon" class="popup d-flex align-items-center justify-content-center">
+    <div v-if="isGameWon" class="popup d-flex align-items-center justify-content-center" @click="isGameWon = false">
       <div class="popup-container">
         <h1 class="popup__title">¡ Felicitaciones {{ userName }} !</h1>
         <p class="popup__scoreboard">
@@ -136,7 +136,19 @@ export default {
         this.isGameWon = true
       }
     }
-  }
+  },
+  watch: {
+    isGameWon(newValue) {
+      if (newValue) {
+        // When the game is won, enable pointer events and set the opacity and scale to 1 for the popup
+        setTimeout(() => {
+          this.$el.querySelector('.popup').style.pointerEvents = 'auto';
+          this.$el.querySelector('.popup').style.opacity = 1;
+          this.$el.querySelector('.popup-container').style.transform = 'scale(1)';
+        }, 100);
+      }
+    }
+  },
 }
 </script>
 
@@ -196,12 +208,18 @@ export default {
   right: 0;
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 1000;
+  opacity: 0; /* Initially set the opacity to 0 to make the popup invisible */
+  pointer-events: none; /* Disable pointer events to prevent interaction with the popup */
+  transition: opacity 0.3s ease;
 }
 .popup-container {
   background-color: #fff;
   padding: 20px;
   border-radius: 5px;
   text-align: center;
+    transform: scale(0.8); /* Initially set the scale to 0.8 to make the popup slightly smaller */
+  transition: transform 0.3s ease; /* Add a transition for the transform property */
+
 }
 @media (min-width: 1200px) {
   .board {
