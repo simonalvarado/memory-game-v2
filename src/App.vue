@@ -5,14 +5,17 @@
       <input type="text" v-model="playerName" class="name-container__input form-control mb-2" placeholder="Ingresa tu nombre">
       <button @click="startGame" class="name-container__button btn btn-primary">Inicar Juego</button>
     </div>
+    <div v-else-if="loading" class="spinner-border game__spinner" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
     <div v-else class="board">
       <div class="row">
-        <MemoryCard v-for="(card, index) in shuffledCards" :key="index" :id="card.id" :image="card.image" :flipped="card.flipped" @select-card="flipCard"/>
+        <MemoryCard v-for="(card, index) in shuffledCards" :key="index" :id="card.id" :image="card.image" :flipped="card.flipped" :found="card.found" @select-card="flipCard"/>
       </div>
     </div>
     <div v-if="userName">
       <p class="board__scoreboard">
-        Correctas: {{ correct }} | Incorrectas: {{ wrong }} | <span @click="restartGame" class="board__scoreboard--restart">Reiniciar</span>
+        Correctas: {{ correct }} | Incorrectas: {{ wrong }} - <span @click="restartGame" class="board__scoreboard--restart">Reiniciar</span>
       </p>
     </div>
   </div>
@@ -34,7 +37,8 @@ export default {
       cards: [],
       selectedCards: [],
       correct: 0,
-      wrong: 0
+      wrong: 0,
+      loading: false
     }
   },
   computed: {
@@ -46,6 +50,7 @@ export default {
   methods: {
     startGame(){
       this.userName = this.playerName
+      this.loading = true
       this.getCards()
     },
     getCards() {
@@ -60,9 +65,11 @@ export default {
             ])
           
           this.cards = memoryCards
+          this.loading = false
         })
         .catch((error) => {
           console.error('Error fetching cards:', error)
+          this.loading = false
         })
     },
     flipCard(cardId) {
@@ -106,6 +113,7 @@ export default {
         card.found = false;
       });
       this.selectedCards = []
+      this.loading = true
       this.getCards()
     }
   }
@@ -143,6 +151,9 @@ export default {
 .board__scoreboard--restart{
   cursor: pointer;
   font-weight: bold;
+}
+.game__spinner::after {
+  border-top-color: rgb(10, 34, 55); /* Set the border top color (for animation) */
 }
 @media (min-width: 1200px) {
   .board {

@@ -60,6 +60,17 @@ export default {
 .card__face--back{
     background-color: rgb(10, 34, 55);
     color: white;
+    transition: background-color 0.3s ease, transform 0.3s ease;;
+}
+.card__face--back:hover{
+    background-color: rgb(7, 24, 37);
+    transform: scale(1.05);
+}
+.card__face--front{
+    transition: transform 0.3s ease;
+}
+.card__face--front:hover{
+    transform: scale(1.05);
 }
 .card__face--back-text{
     position: absolute;
