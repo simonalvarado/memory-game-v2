@@ -111,7 +111,7 @@ export default {
           secondCard.flipped = false
           this.wrong++
           this.selectedCards = []
-        }, 1000)
+        }, 1200)
       }
 
       this.checkWin()

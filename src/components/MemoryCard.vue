@@ -54,23 +54,24 @@ export default {
     top: 0;
     left: 0;
     backface-visibility: hidden;
-    transition: transform 0.5s ease;
+    transition: 0.5s transform ease-in;
     border-radius: 5px;
 }
+/* .card__face:hover{
+    transform: scale(1.05);
+} */
 .card__face--back{
     background-color: rgb(10, 34, 55);
     color: white;
-    transition: background-color 0.3s ease, transform 0.3s ease;;
+    transition: background-color 0.3s ease, transform 0.3s ease;
 }
 .card__face--back:hover{
     background-color: rgb(7, 24, 37);
-    transform: scale(1.05);
 }
 .card__face--front{
     transition: transform 0.3s ease;
-}
-.card__face--front:hover{
-    transform: scale(1.05);
+    transform: rotateY(360deg);
+    backface-visibility: visible;
 }
 .card__face--back-text{
     position: absolute;
