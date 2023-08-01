@@ -95,7 +95,6 @@ export default {
         })
     },
     flipCard(cardId) {
-      console.log('card id', cardId)
       const cardToFlip = this.cards.find(card => card.id === cardId)
 
       if (!cardToFlip || cardToFlip.flipped || this.selectedCards.length >= 2) {
@@ -158,7 +157,6 @@ export default {
     },
     checkWin() {
       const allCardsFound = this.shuffledCards.every(card => card.found)
-      console.log('all cards found?', allCardsFound)
       if (allCardsFound) {
         this.isGameWon = true
         launchConfetti()
@@ -168,7 +166,6 @@ export default {
   watch: {
     isGameWon(newValue) {
       if (newValue) {
-        // When the game is won, enable pointer events and set the opacity and scale to 1 for the popup
         setTimeout(() => {
           this.$el.querySelector('.popup').style.pointerEvents = 'auto';
           this.$el.querySelector('.popup').style.opacity = 1;
@@ -203,7 +200,7 @@ export default {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.6); /* Adjust the opacity to control the darkness */
+  background-color: rgba(0, 0, 0, 0.6);
   z-index: 999;
 }
 .name-container{
@@ -226,7 +223,7 @@ export default {
   font-weight: bold;
 }
 .game__spinner::after {
-  border-top-color: rgb(10, 34, 55); /* Set the border top color (for animation) */
+  border-top-color: rgb(10, 34, 55);
 }
 .popup {
   position: fixed;
@@ -236,8 +233,8 @@ export default {
   right: 0;
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 1000;
-  opacity: 0; /* Initially set the opacity to 0 to make the popup invisible */
-  pointer-events: none; /* Disable pointer events to prevent interaction with the popup */
+  opacity: 0;
+  pointer-events: none;
   transition: opacity 0.3s ease;
 }
 .popup-container {
@@ -245,8 +242,8 @@ export default {
   padding: 20px;
   border-radius: 5px;
   text-align: center;
-  transform: scale(0.8); /* Initially set the scale to 0.8 to make the popup slightly smaller */
-  transition: transform 0.3s ease; /* Add a transition for the transform property */
+  transform: scale(0.8);
+  transition: transform 0.3s ease;
 
 }
 @media (min-width: 1200px) {

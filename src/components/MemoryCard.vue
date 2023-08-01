@@ -29,7 +29,7 @@ export default {
     },
     setup(props, context) {
     const selectCard = () => {
-      context.emit('select-card', props.id); // Pass the id of the clicked card
+      context.emit('select-card', props.id);
     };
 
     return {
