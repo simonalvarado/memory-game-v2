@@ -1,4 +1,4 @@
-# v2
+# Memory Game
 
 ## Project setup
 ```
@@ -22,3 +22,8 @@ npm run lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+## Try it live
+```
+Deployed on Vercel: https://memory-game-v2.vercel.app/
+```
