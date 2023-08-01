@@ -19,12 +19,13 @@
       </p>
     </div>
     <div v-if="isGameWon" class="popup d-flex align-items-center justify-content-center">
-      <div class="popup-container">
+      <div class="popup-container d-flex flex-column align-items-center justify-content-center">
         <h1 class="popup__title">¡ Felicitaciones {{ userName }} !</h1>
         <p class="popup__scoreboard">
           Correctas: {{ correct }} | Incorrectas: {{ wrong }}
         </p>
-        <button @click="restartGame" class="popup__button btn btn-primary">Jugar de nuevo</button>
+        <button @click="restartGame" class="popup__button btn btn-primary mb-2">Jugar de nuevo</button>
+        <button @click="restartName" class="popup__button btn btn-primary">Cambiar de nombre</button>
       </div>
     </div>
   </div>
@@ -43,13 +44,22 @@ export default {
   data () {
     return {
       playerName: '',
-      userName: '',
+      userName: localStorage.getItem('userName') || '',
       cards: [],
       selectedCards: [],
       correct: 0,
       wrong: 0,
       loading: false,
       isGameWon: false
+    }
+  },
+  created() {
+    const storedUserName = localStorage.getItem('userName');
+
+    if (storedUserName) {
+      this.userName = storedUserName;
+      this.loading = true
+      this.getCards()
     }
   },
   computed: {
@@ -60,6 +70,7 @@ export default {
   },
   methods: {
     startGame(){
+      localStorage.setItem('userName', this.playerName);
       this.userName = this.playerName
       this.loading = true
       this.getCards()
@@ -129,6 +140,21 @@ export default {
       this.isGameWon = false
       this.loading = true
       this.getCards()
+    },
+    restartName() {
+      this.playerName = ''
+      localStorage.removeItem('userName');
+      this.userName = ''
+            this.cards = []
+      this.correct = 0
+      this.wrong = 0
+      this.cards.forEach(card => {
+        card.flipped = false;
+        card.found = false;
+      });
+      this.selectedCards = []
+      this.isGameWon = false
+      this.loading = true
     },
     checkWin() {
       const allCardsFound = this.shuffledCards.every(card => card.found)
