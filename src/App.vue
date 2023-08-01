@@ -24,14 +24,14 @@
     <div v-if="isGameWon" class="popup d-flex align-items-center justify-content-center">
       <div class="popup-container d-flex flex-column align-items-center justify-content-center">
         <h1 class="popup__title">¡ {{ userName }}, has ganado !</h1>
-        <p class="popup__scoreboard">
+        <p class="popup__scoreboard mt-1">
           Correctas: {{ correct }} | Incorrectas: {{ wrong }}
         </p>
         <p v-if="isRecord" class="popup__record">
           <b>¡Nuevo récord!</b> ¡Tan solo {{ getCurrentRecordCount() }} incorrectas!
         </p>
         <p v-else class="popup__record">
-          Record actual: {{ getCurrentRecordHolder() }} ({{ getCurrentRecordCount() }} incorrectas)
+          Récord actual: {{ getCurrentRecordHolder() }} ({{ getCurrentRecordCount() }} incorrectas)
         </p>
         <button @click="restartGame" class="popup__button btn btn-primary mb-2">Jugar de nuevo</button>
         <button @click="restartName" class="popup__button btn btn-primary">Cambiar de nombre</button>
