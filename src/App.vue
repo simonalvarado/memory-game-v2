@@ -67,9 +67,6 @@ export default {
     }
   },
   created() {
-    console.log('is record?', this.isRecord)
-    console.log('this.record:', this.currentRecord)
-    console.log('localStorageRecord', localStorage.getItem('record'))
     const storedUserName = localStorage.getItem('userName');
 
     if (storedUserName) {
@@ -175,11 +172,11 @@ export default {
       if (allCardsFound) {
         const currentRecord = localStorage.getItem('record');
 
-        if (this.wrong < currentRecord) {
+        if (!currentRecord || this.wrong < currentRecord) {
           localStorage.setItem('record', this.wrong);
           localStorage.setItem('recordHolder', localStorage.getItem('userName'));
-          this.isRecord = true
-          launchConfetti()
+          this.isRecord = true;
+          launchConfetti();
         }
 
         this.isGameWon = true
