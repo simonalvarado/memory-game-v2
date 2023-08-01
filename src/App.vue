@@ -1,9 +1,9 @@
 <template>
   <div :class="{ 'game d-flex flex-column align-items-center justify-content-between': true, 'game--innactive': isGameWon}">
-    <h1 class="game__title pb-3 pt-4">Memory Game</h1>
-    <div v-if="!userName" class="name-container">
-      <input type="text" v-model="playerName" class="name-container__input form-control mb-2" placeholder="Ingresa tu nombre">
-      <button @click="startGame" class="name-container__button btn btn-primary">Inicar Juego</button>
+    <h1 @click="restartName" class="game__title pb-3 pt-4">Memory Game</h1>
+    <div v-if="!userName" class="name-container d-flex flex-column align-items-center justify-content-center">
+      <input type="text" v-model="playerName" class="name-container__input form-control mb-2" placeholder="Ingresa tu nombre" @keyup.enter="startGame">
+      <button ref="startButton" @click="startGame" class="name-container__button btn btn-primary">Inicar Juego</button>
     </div>
     <div v-else-if="loading" class="spinner-border game__spinner" role="status">
       <span class="visually-hidden">Loading...</span>
@@ -127,7 +127,7 @@ export default {
 
       this.checkWin()
     },
-    restartGame() {
+    resetGame() {
       this.cards = []
       this.correct = 0
       this.wrong = 0
@@ -138,22 +138,16 @@ export default {
       this.selectedCards = []
       this.isGameWon = false
       this.loading = true
+    },
+    restartGame() {
+      this.resetGame()
       this.getCards()
     },
     restartName() {
       this.playerName = ''
       localStorage.removeItem('userName');
       this.userName = ''
-            this.cards = []
-      this.correct = 0
-      this.wrong = 0
-      this.cards.forEach(card => {
-        card.flipped = false;
-        card.found = false;
-      });
-      this.selectedCards = []
-      this.isGameWon = false
-      this.loading = true
+      this.resetGame()
     },
     checkWin() {
       const allCardsFound = this.shuffledCards.every(card => card.found)
@@ -203,11 +197,10 @@ export default {
   background-color: rgba(0, 0, 0, 0.6);
   z-index: 999;
 }
+.game__title{
+  cursor: pointer;
+}
 .name-container{
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
   height: 90vh;
 }
 .name-container__input{
