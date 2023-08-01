@@ -33,6 +33,7 @@
 <script>
 import axios from 'axios'
 import MemoryCard from './components/MemoryCard.vue'
+import { launchConfetti } from './utilities/confetti.js'
 
 export default {
   name: 'App',
@@ -134,6 +135,7 @@ export default {
       console.log('all cards found?', allCardsFound)
       if (allCardsFound) {
         this.isGameWon = true
+        launchConfetti()
       }
     }
   },
@@ -217,7 +219,7 @@ export default {
   padding: 20px;
   border-radius: 5px;
   text-align: center;
-    transform: scale(0.8); /* Initially set the scale to 0.8 to make the popup slightly smaller */
+  transform: scale(0.8); /* Initially set the scale to 0.8 to make the popup slightly smaller */
   transition: transform 0.3s ease; /* Add a transition for the transform property */
 
 }

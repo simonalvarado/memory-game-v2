@@ -57,16 +57,16 @@ export default {
     transition: 0.5s transform ease-in;
     border-radius: 5px;
 }
-/* .card__face:hover{
+.card__face:hover{
     transform: scale(1.05);
-} */
+}
 .card__face--back{
     background-color: rgb(10, 34, 55);
     color: white;
     transition: background-color 0.3s ease, transform 0.3s ease;
 }
 .card__face--back:hover{
-    background-color: rgb(7, 24, 37);
+    background-color: rgb(23, 71, 110);
 }
 .card__face--front{
     transition: transform 0.3s ease;
