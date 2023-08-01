@@ -18,7 +18,7 @@
         Correctas: {{ correct }} | Incorrectas: {{ wrong }} - <span @click="restartGame" class="board__scoreboard--restart">Reiniciar</span>
       </p>
     </div>
-    <div v-if="isGameWon" class="popup d-flex align-items-center justify-content-center" @click="isGameWon = false">
+    <div v-if="isGameWon" class="popup d-flex align-items-center justify-content-center">
       <div class="popup-container">
         <h1 class="popup__title">¡ Felicitaciones {{ userName }} !</h1>
         <p class="popup__scoreboard">
@@ -112,7 +112,7 @@ export default {
           secondCard.flipped = false
           this.wrong++
           this.selectedCards = []
-        }, 1200)
+        }, 1100)
       }
 
       this.checkWin()
