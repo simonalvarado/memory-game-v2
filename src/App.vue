@@ -24,7 +24,7 @@
     <div v-if="isGameWon" class="popup d-flex align-items-center justify-content-center">
       <div class="popup-container d-flex flex-column align-items-center justify-content-center">
         <h1 class="popup__title">¡ {{ userName }}, has ganado !</h1>
-        <p class="popup__scoreboard mt-1">
+        <p class="popup__scoreboard mt-2">
           Correctas: {{ correct }} | Incorrectas: {{ wrong }}
         </p>
         <p v-if="isRecord" class="popup__record">
