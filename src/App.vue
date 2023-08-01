@@ -18,14 +18,20 @@
         Correctas: {{ correct }} | Incorrectas: {{ wrong }} - <span @click="restartGame" class="board__scoreboard--restart">Reiniciar</span>
       </p>
     </div>
-    <div v-if="error" class="error__message">
+    <div v-if="error" class="error__message pb-2">
       {{ errorMessage }}
     </div>
     <div v-if="isGameWon" class="popup d-flex align-items-center justify-content-center">
       <div class="popup-container d-flex flex-column align-items-center justify-content-center">
-        <h1 class="popup__title">¡ Felicitaciones {{ userName }} !</h1>
+        <h1 class="popup__title">¡ {{ userName }}, has ganado !</h1>
         <p class="popup__scoreboard">
           Correctas: {{ correct }} | Incorrectas: {{ wrong }}
+        </p>
+        <p v-if="isRecord" class="popup__record">
+          <b>¡Nuevo récord!</b> ¡Tan solo {{ getCurrentRecordCount() }} incorrectas!
+        </p>
+        <p v-else class="popup__record">
+          Record actual: {{ getCurrentRecordHolder() }} ({{ getCurrentRecordCount() }} incorrectas)
         </p>
         <button @click="restartGame" class="popup__button btn btn-primary mb-2">Jugar de nuevo</button>
         <button @click="restartName" class="popup__button btn btn-primary">Cambiar de nombre</button>
@@ -56,21 +62,26 @@ export default {
       loading: false,
       isGameWon: false,
       error: false,
-      errorMessage: ''
+      errorMessage: '',
+      isRecord: false
     }
   },
   created() {
+    console.log('is record?', this.isRecord)
+    console.log('this.record:', this.currentRecord)
+    console.log('localStorageRecord', localStorage.getItem('record'))
     const storedUserName = localStorage.getItem('userName');
 
     if (storedUserName) {
       this.userName = storedUserName;
       this.loading = true
+      this.isRecord = false
       this.getCards()
     }
   },
   computed: {
     shuffledCards() {
-      const sortedCards = this.cards.slice(-24)
+      const sortedCards = this.cards.slice(-4)
       return sortedCards.sort(() => Math.random() - 0.5)
     }
   },
@@ -147,6 +158,7 @@ export default {
       this.selectedCards = []
       this.isGameWon = false
       this.loading = true
+      this.isRecord = false
     },
     restartGame() {
       this.resetGame()
@@ -161,10 +173,26 @@ export default {
     checkWin() {
       const allCardsFound = this.shuffledCards.every(card => card.found)
       if (allCardsFound) {
+        const currentRecord = localStorage.getItem('record');
+
+        if (this.wrong < currentRecord) {
+          localStorage.setItem('record', this.wrong);
+          localStorage.setItem('recordHolder', localStorage.getItem('userName'));
+          this.isRecord = true
+          launchConfetti()
+        }
+
         this.isGameWon = true
-        launchConfetti()
       }
-    }
+    },
+    getCurrentRecordHolder() {
+      const recordHolder = localStorage.getItem('recordHolder');
+      return recordHolder || 'N/A';
+    },
+    getCurrentRecordCount() {
+      const recordCount = localStorage.getItem('record');
+      return recordCount || 'N/A';
+    },
   },
   watch: {
     isGameWon(newValue) {
@@ -176,7 +204,7 @@ export default {
         }, 100);
       }
     }
-  },
+  }
 }
 </script>
 
@@ -249,7 +277,6 @@ export default {
 }
 .error__message {
   color: red;
-  margin-top: 10px;
 }
 @media (min-width: 1200px) {
   .board {
