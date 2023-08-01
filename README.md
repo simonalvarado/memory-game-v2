@@ -24,6 +24,4 @@ npm run lint
 See [Configuration Reference](https://cli.vuejs.org/config/).
 
 ## Try it live
-```
-Deployed on Vercel: https://memory-game-v2.vercel.app/
-```
+Deployed on Vercel: [https://memory-game-v2.vercel.app/](https://memory-game-v2.vercel.app/)
