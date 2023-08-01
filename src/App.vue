@@ -81,7 +81,7 @@ export default {
   },
   computed: {
     shuffledCards() {
-      const sortedCards = this.cards.slice(-4)
+      const sortedCards = this.cards.slice(-24)
       return sortedCards.sort(() => Math.random() - 0.5)
     }
   },
