@@ -10,13 +10,16 @@
     </div>
     <div v-else class="board">
       <div class="row">
-        <MemoryCard v-for="(card, index) in shuffledCards" :key="index" :id="card.id" :image="card.image" :flipped="card.flipped" :found="card.found" @select-card="flipCard"/>
+        <MemoryCard v-for="card in shuffledCards" :key="card.id" :id="card.id" :image="card.image" :flipped="card.flipped" :found="card.found" @select-card="flipCard"/>
       </div>
     </div>
     <div v-if="userName">
       <p class="board__scoreboard">
         Correctas: {{ correct }} | Incorrectas: {{ wrong }} - <span @click="restartGame" class="board__scoreboard--restart">Reiniciar</span>
       </p>
+    </div>
+    <div v-if="error" class="error__message">
+      {{ errorMessage }}
     </div>
     <div v-if="isGameWon" class="popup d-flex align-items-center justify-content-center">
       <div class="popup-container d-flex flex-column align-items-center justify-content-center">
@@ -29,6 +32,7 @@
       </div>
     </div>
   </div>
+  
 </template>
 
 <script>
@@ -50,7 +54,9 @@ export default {
       correct: 0,
       wrong: 0,
       loading: false,
-      isGameWon: false
+      isGameWon: false,
+      error: false,
+      errorMessage: ''
     }
   },
   created() {
@@ -88,10 +94,13 @@ export default {
           
           this.cards = memoryCards
           this.loading = false
+          this.error = false
         })
         .catch((error) => {
           console.error('Error fetching cards:', error)
           this.loading = false
+          this.error = true
+          this.errorMessage = "Error obteniendo las cartas. Por favor intentar de nuevo más tarde.";
         })
     },
     flipCard(cardId) {
@@ -237,7 +246,10 @@ export default {
   text-align: center;
   transform: scale(0.8);
   transition: transform 0.3s ease;
-
+}
+.error__message {
+  color: red;
+  margin-top: 10px;
 }
 @media (min-width: 1200px) {
   .board {
